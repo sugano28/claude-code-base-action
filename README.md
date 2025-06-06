@@ -323,7 +323,7 @@ To use OAuth authentication with your Claude Max Subscription Plan:
    - Add the following secrets:
      - `CLAUDE_ACCESS_TOKEN` - Your Claude AI OAuth access token
      - `CLAUDE_REFRESH_TOKEN` - Your Claude AI OAuth refresh token
-     - `CLAUDE_EXPIRES_AT` - Token expiration timestamp (Unix timestamp in seconds)
+     - `CLAUDE_EXPIRES_AT` - Token expiration timestamp (Unix timestamp in milliseconds)
 
 2. Reference the secrets in your workflow:
    ```yaml
@@ -332,6 +332,16 @@ To use OAuth authentication with your Claude Max Subscription Plan:
    claude_refresh_token: ${{ secrets.CLAUDE_REFRESH_TOKEN }}
    claude_expires_at: ${{ secrets.CLAUDE_EXPIRES_AT }}
    ```
+
+**Token Management Features**: 
+- **Automatic Expiration Checking**: Validates if your OAuth token is expired or will expire within 5 minutes
+- **Token Refresh Automation**: When tokens are expiring within 72 hours, automatically creates:
+  - A GitHub workflow (`claude-token-refresh.yml`) that checks daily and creates issues when renewal is needed
+  - A helper script (`./scripts/refresh-claude-tokens.sh`) to simplify manual token refresh
+- **Smart Guidance**: Provides specific instructions based on your token status
+- **Proactive Notifications**: Uses GitHub notices and warnings to alert you before tokens expire
+
+This prevents authentication errors and helps maintain continuous operation of your workflows.
 
 ### API Key Authentication Setup (Legacy)
 
